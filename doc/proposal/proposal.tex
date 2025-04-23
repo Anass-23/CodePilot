@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{13.6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{CodePilot Lite Proposal}
+\lhead{NLP Project - Group of 3}
+\rfoot{\thepage}
+
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\title{\vspace{-2cm}CodePilot Lite\\ \large An NLP-Powered Codebase Question Answering Agent}
+\author{Group Members: [Anass, Eric, Pol]}
+\date{April 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Project Title}
+\textbf{CodePilot Lite: An NLP-Powered Codebase Question Answering Agent}
+
+\section{Objective}
+\subsection*{Problem Statement}
+Understanding unfamiliar codebases is a common challenge in software development. Developers often spend significant time navigating through multiple files to comprehend the purpose and structure of the code. Our goal is to develop a lightweight assistant that can answer natural language questions about a Python codebase.
+
+\section{Historical Context}
+The complexity of modern software systems has steadily increased, necessitating better tools for navigating and understanding large codebases. Early tools such as grep and ctags helped with code search and navigation. With the evolution of integrated development environments (IDEs), static analysis and autocompletion tools became common, offering partial support for code comprehension. More recently, machine learning and NLP advancements—particularly large language models (LLMs)—have enabled intelligent code understanding, code summarization, and even generation capabilities. Tools like GitHub Copilot, Amazon CodeWhisperer, and Tabnine now integrate code-aware AI directly into developer workflows, laying the groundwork for conversational and assistant-style interfaces.
+
+\section{State of the Art}
+The current frontier in AI-assisted programming includes tools like OpenAI Codex (used by GitHub Copilot), DeepMind's AlphaCode, and Salesforce CodeGen. These models are capable of not only generating code but also answering natural language questions about existing codebases, performing code summarization, and completing functions based on intent. Our approach draws from this progress by implementing a mini-RAG pipeline tailored for static Python codebases. Unlike fully integrated code-generation tools, our system focuses on explainability and transparency, leveraging prompt engineering and retrieval techniques to ground LLM responses in actual code.
+
+\subsection*{Relevance and Novelty}
+This project combines natural language processing techniques with static code analysis and retrieval-augmented generation (RAG) to provide insightful responses. It enables faster understanding of codebases and helps developers quickly find relevant functions, classes, or modules.
+
+\section{Data or Knowledge Sources}
+\subsection*{Input Format}
+Plain-text \texttt{.py} files from a Python project directory.
+
+\subsection*{Data Sources}
+We will use:
+\begin{itemize}[noitemsep]
+  \item A synthetic multi-file Python project for development.
+  \item A small open-source GitHub project for testing.
+\end{itemize}
+
+\subsection*{Preprocessing Steps}
+\begin{enumerate}[noitemsep]
+  \item Parse code using Python’s \texttt{ast} module to extract:
+    \begin{itemize}[noitemsep]
+      \item Function names and parameters
+      \item Docstrings and imports
+      \item Class definitions
+    \end{itemize}
+  \item Chunk the parsed code (by function/class level).
+  \item Generate semantic embeddings for each chunk.
+\end{enumerate}
+
+\section{Methodology}
+
+\subsection*{System Overview}
+The system consists of three major modules:
+\begin{enumerate}
+    \item \textbf{AST Parsing}: Static code analysis using Python’s \texttt{ast} module to extract structured metadata.
+    \item \textbf{Embedding \& Retrieval}: Embed each code chunk using OpenAI or HuggingFace models and store them in a vector database (e.g., FAISS or Chroma).
+    \item \textbf{Query \& Answering}: Retrieve the most relevant code snippets and generate a response using an LLM with a custom prompt via LangChain.
+\end{enumerate}
+
+\subsection*{Response Generation}
+We use Retrieval-Augmented Generation (RAG):
+\begin{itemize}[noitemsep]
+  \item The user query is embedded and matched against stored vectors.
+  \item Top-k relevant code snippets are used as context.
+  \item The query and context are formatted into a prompt template.
+  \item A language model (e.g., GPT-3.5) generates a natural language response.
+\end{itemize}
+
+\subsection*{Tools and Libraries}
+\begin{itemize}[noitemsep]
+  \item Python \texttt{ast} module
+  \item LangChain
+  \item OpenAI API / HuggingFace Transformers
+  \item FAISS or ChromaDB
+  \item Streamlit (optional interface)
+\end{itemize}
+
+\section{Expected Outcome}
+A working command-line or notebook-based system that:
+\begin{itemize}[noitemsep]
+  \item Accepts natural language questions
+  \item Retrieves and analyzes relevant code segments
+  \item Responds with a clear, informative answer
+\end{itemize}
+
+\section{Evaluation}
+
+\subsection*{Functional Testing}
+We will create test questions such as:
+\begin{itemize}[noitemsep]
+  \item ``What does \texttt{funcs.sum()} do?''
+  \item ``Where is the \texttt{User} class defined?''
+\end{itemize}
+Answers will be evaluated manually for correctness.
+
+\subsection*{Optional Metrics}
+If labeled examples are used, we may compute:
+\begin{itemize}[noitemsep]
+  \item Precision@k
+  \item Similarity scores
+\end{itemize}
+
+\section{Timeline and Task Breakdown}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{6cm}|c|c|c|p{2.5cm}|}
+\hline
+\textbf{Task} & \textbf{A} & \textbf{B} & \textbf{C} & \textbf{Time Estimate} \\
+\hline
+AST Parser and Metadata Extraction & X & & & 4 hours \\
+Embeddings and Chunking            & & X & & 4 hours \\
+Vector Database Setup              & & X & X & 4 hours \\
+LangChain Integration              & & & X & 3 hours \\
+Interface and Testing              & X & & X & 4 hours \\
+Documentation and Report Writing   & X & X & X & 4 hours \\
+\hline
+\end{tabular}
+\caption{Timeline and task distribution among group members.}
+\end{table}
+
+\section{Creativity and Innovation}
+The system is modular, interpretable, and easy to extend. It’s a practical example of applying state-of-the-art NLP (RAG, embeddings, LLMs) to the software engineering domain. The fallback ``I don’t know'' response encourages trustworthy AI behavior.
+
+\section{Final Deliverables}
+\begin{itemize}[noitemsep]
+  \item \textbf{Codebase}: Well-organized and documented
+  \item \textbf{README}: Instructions to run and test the assistant
+  \item \textbf{Report}: System overview, design, and evaluation
+  \item \textbf{Demo}: Live walkthrough of question-answering on a Python project
+\end{itemize}
+
+\end{document}

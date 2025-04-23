@@ -1,0 +1,49 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{umlpackage}[fill=gray!10]{Core System}
+        \begin{umlclass}[x=0,y=0,fill=blue!15]{Processors}{}
+            {AST Parser\\Chunker\\Metadata Extractor}
+        \end{umlclass}
+        
+        \begin{umlclass}[x=6,y=0,fill=purple!20]{Vector DB}{}
+            {Embeddings\\FAISS Store}
+        \end{umlclass}
+        
+        \begin{umlclass}[x=3,y=-4,fill=orange!20]{Engine}{}
+            {Retriever\\Response Generator}
+        \end{umlclass}
+        
+        \begin{umlclass}[x=6,y=-8,fill=red!20]{LLM}{}
+            {Ollama Client\\Prompt Templates}
+        \end{umlclass}
+        
+        \begin{umlclass}[x=0,y=-8,fill=green!20]{UI}{}
+            {CLI\\Streamlit Web Interface}
+        \end{umlclass}
+
+        \begin{umlclass}
+                [x=10,y=-4,fill=yellow!30]{Config}{}
+                {Model parameters\\Settings}
+        \end{umlclass}
+
+        \begin{umlclass}
+                [x=-4,y=-4,fill=cyan!20]{Logging}{}
+                {Logger\\Formatters}
+        \end{umlclass}
+
+    \umldep{Processors}{Vector DB}
+    \umldep{Vector DB}{Engine}
+    \umldep{Engine}{LLM}
+    \umldep{Engine}{UI}
+    \umldep{LLM}{UI}
+    
+    \umldep{Config}{Vector DB}
+    \umldep{Config}{Engine}
+    \umldep{Config}{LLM}
+    \end{umlpackage}
+\end{tikzpicture}
+\end{document}
